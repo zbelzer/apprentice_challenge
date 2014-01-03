@@ -3,9 +3,12 @@ require 'date'
 
 # Entry point for RecordParsing
 class RecordParser
+  # Assumed headers for incoming data.
+  HEADERS = %w(LastName FirstName Gender FavoriteColor DateOfBirth)
+
   # Mandatory options expected by the parser.
   DEFAULT_OPTIONS = {
-    :headers           => true,
+    :headers           => HEADERS,
     :header_converters => lambda {|h| h.strip.to_sym},
     :converters        => [lambda {|h| h.strip}, :date]
   }
@@ -39,10 +42,8 @@ class RecordParser
   # @param [Hash] options
   # @return [Array<Hash>]
   def parse(options={})
-    sort_options = options[:sort]
-
     rows = parse_rows(data)
-    sort_rows(rows, sort_options)
+    sort_rows(rows, options[:sort])
   end
 
   # Sort the given row data based on the given options.
