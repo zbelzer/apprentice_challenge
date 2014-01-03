@@ -1,12 +1,6 @@
 require_relative 'spec_helper'
 
 describe RecordParser do
-  let(:einstein) { {:LastName => "Einstein", :FirstName => "Albert",  :Gender => "Male",   :FavoriteColor => "Green",  :DateOfBirth => Date.parse("1879-03-14")} }
-  let(:darwin)   { {:LastName => "Darwin",   :FirstName => "Charles", :Gender => "Male",   :FavoriteColor => "Blue",   :DateOfBirth => Date.parse("1809-02-12")} }
-  let(:curie)    { {:LastName => "Curie",    :FirstName => "Marie",   :Gender => "Female", :FavoriteColor => "Yellow", :DateOfBirth => Date.parse("1867-11-07")} }
-  let(:lovelace) { {:LastName => "Lovelace", :FirstName => "Ada",     :Gender => "Female", :FavoriteColor => "Purple", :DateOfBirth => Date.parse("1815-12-10")} }
-  let(:turing)   { {:LastName => "Turing",   :FirstName => "Alan",    :Gender => "Male",   :FavoriteColor => "Green",  :DateOfBirth => Date.parse("1912-06-03")} }
-
   describe "parse" do
     context "extraction" do
       let(:correct_result) { [ einstein, darwin, curie, lovelace, turing ] }
