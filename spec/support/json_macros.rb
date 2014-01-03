@@ -1,12 +1,6 @@
 module JsonMacros
   def json_response
-    json_body = JSON.parse(last_response.body)
-
-    if json_body.is_a?(Hash)
-      json_body.with_indifferent_access
-    else
-      json_body.map(&:with_indifferent_access)
-    end
+    JSON.parse(last_response.body)
   end
 
   def get_json(uri, params = {}, env = {}, &block)

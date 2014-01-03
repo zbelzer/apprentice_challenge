@@ -3,7 +3,9 @@ require 'spec_helper'
 describe RecordServer do
   include Rack::Test::Methods
 
-  let(:einstein) { {:LastName => "Einstein", :FirstName => "Albert",  :Gender => "Male",   :FavoriteColor => "Green",  :DateOfBirth => Date.parse("1879-03-14")} }
+  let(:einstein_record) do
+    {"LastName" => "Einstein", "FirstName" => "Albert",  "Gender" => "Male", "FavoriteColor" => "Green", "DateOfBirth" => "1879-03-14"}
+  end
 
   def app
     RecordServer
@@ -15,7 +17,7 @@ describe RecordServer do
 
   describe "POST /records" do
     it "creates a new record for CSV formatted line" do
-      einstein = sample_from_fixture('test.csv', 1)
+      einstein = sample_from_fixture('test.csv', 0)
       post_json "/records", {:data => einstein}
 
       last_response.status.should == 201
@@ -24,12 +26,13 @@ describe RecordServer do
 
   describe "GET /records" do
     it "gets all records" do
-      einstein = sample_from_fixture('test.csv', 1)
+      einstein = sample_from_fixture('test.csv', 0)
       post_json "/records", {:data => einstein}
 
       get_json "/records"
       last_response.status.should == 200
       expect(json_response).to have(1).record
+      expect(json_response[0]).to eq(einstein_record)
     end
   end
 end
