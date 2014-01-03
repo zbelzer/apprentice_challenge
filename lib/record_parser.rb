@@ -1,5 +1,6 @@
 require 'csv'
 require 'date'
+require_relative 'record_sorter'
 
 # Entry point for RecordParsing
 class RecordParser
@@ -46,39 +47,6 @@ class RecordParser
     sort_rows(rows, options[:sort])
   end
 
-  # Sort the given row data based on the given options.
-  #
-  # @param [Array] sorts
-  # @return [Array<Hash>]
-  def sort_rows(rows, sorts)
-    return rows if sorts.nil? || sorts.empty?
-
-    sorter = new_sort(sorts)
-    rows.sort(&sorter)
-  end
-
-  # Create a new column/ordering sort given a list of sorts.
-  #
-  # @param [Array<Array(col,order)>] sorts
-  # @return [Proc]
-  def new_sort(sorts)
-    col, order = sorts.first
-
-    lambda { |a, b|
-      result = a[col] <=> b[col]
-
-      if result == 0 # Tie
-        if sorts.empty?
-          result
-        else
-          new_sort(sorts[1..-1]).call(a, b)
-        end
-      else
-        order == :asc ? result : -result
-      end
-    }
-  end
-
   # Get the raw data of the file as a string.
   #
   # @raise RecordParser::FileNotFound
@@ -119,4 +87,14 @@ class RecordParser
     CSV.parse(data, csv_options).map(&:to_hash)
   end
   private :parse_rows
+
+  # Do the sorting of the rows
+  #
+  # @param [Array<Hash>]
+  # @param [Array<Array(col,order)>] sorts
+  #
+  # @return [Array<Hash>]
+  def sort_rows(rows, sorts)
+    RecordSorter.new(rows).sort(sorts)
+  end
 end
