@@ -12,6 +12,16 @@ describe RecordParser do
       ]
     end
 
+    it "raises FileNotFound exception when given file does not exist" do
+      expect {
+
+        not_a_file = path_to_fixture('foo.csv')
+        parser = RecordParser.new(not_a_file).parse
+        parser.parse
+
+      }.to raise_error(RecordParser::FileNotFound)
+    end
+
     it "parses a CSV file" do
       file = path_to_fixture('test.csv')
       parser = RecordParser.new(file)
