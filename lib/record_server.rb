@@ -1,6 +1,7 @@
 require 'grape'
 require 'tempfile'
 
+# Grape::API endpoint to upload and retrieve rows.
 class RecordServer < Grape::API
   format :json
 
@@ -50,7 +51,7 @@ class RecordServer < Grape::API
       RecordServer.records
     end
 
-    desc "Returns records sorted by :sort"
+    desc "Returns all records sorted by :sort"
     get ":sort" do
       sorter = RecordSorter.new(RecordServer.records)
       sort_order = SORT_MAPPING[params[:sort]]

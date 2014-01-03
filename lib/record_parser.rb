@@ -90,7 +90,7 @@ class RecordParser
 
   # Do the sorting of the rows
   #
-  # @param [Array<Hash>]
+  # @param [Array<Hash>] rows
   # @param [Array<Array(col,order)>] sorts
   #
   # @return [Array<Hash>]
