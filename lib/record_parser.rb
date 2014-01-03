@@ -10,7 +10,7 @@ class RecordParser
   }
 
   # Separators supported by the parser.
-  SUPPORTED_SEPARATORS = %w(,)
+  SUPPORTED_SEPARATORS = [',', '|', "\t"]
 
   # To be raised when the given file cannot be found.
   class FileNotFound < RuntimeError
