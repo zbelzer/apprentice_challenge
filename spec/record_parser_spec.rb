@@ -86,7 +86,7 @@ describe RecordParser do
       end
 
       it "sorts by two criteria" do
-        result = parser.parse(:sort => [[:LastName, :asc], [:LastName, :desc]])
+        result = parser.parse(:sort => [[:Gender, :asc], [:LastName, :asc]])
         expect(result).to eql(gender_then_last_name)
       end
 

@@ -1,4 +1,5 @@
 require 'csv'
+require 'date'
 
 # Entry point for RecordParsing
 class RecordParser
@@ -6,7 +7,7 @@ class RecordParser
   DEFAULT_OPTIONS = {
     :headers           => true,
     :header_converters => lambda {|h| h.strip.to_sym},
-    :converters        => lambda {|h| h.strip}
+    :converters        => [lambda {|h| h.strip}, :date]
   }
 
   # Separators supported by the parser.
@@ -51,18 +52,30 @@ class RecordParser
   def sort_rows(rows, sorts)
     return rows if sorts.nil? || sorts.empty?
 
-    sort = sorts.first
+    sorter = new_sort(sorts)
+    rows.sort(&sorter)
+  end
 
-    rows.sort do |a, b|
-      col, order = sort
+  # Create a new column/ordering sort given a list of sorts.
+  #
+  # @param [Array<Array(col,order)>] sorts
+  # @return [Proc]
+  def new_sort(sorts)
+    col, order = sorts.first
 
+    lambda { |a, b|
       result = a[col] <=> b[col]
 
       if result == 0 # Tie
+        if sorts.empty?
+          result
+        else
+          new_sort(sorts[1..-1]).call(a, b)
+        end
       else
         order == :asc ? result : -result
       end
-    end
+    }
   end
 
   # Get the raw data of the file as a string.
