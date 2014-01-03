@@ -8,15 +8,15 @@ print_order = %w(LastName FirstName Gender DateOfBirth FavoriteColor)
 
 puts "By Gender asendingc then LastName descending"
 rows = parser.parse(:sort => [[:Gender, :asc], [:LastName, :asc]])
-puts RecordPrinter.new(rows).print(print_order)
+puts RecordPrinter.new(rows).print(*print_order)
 puts
 
 puts "By DateOfBirth ascending"
 rows = parser.parse(:sort => [[:LastName, :desc]])
-puts RecordPrinter.new(rows).print(print_order)
+puts RecordPrinter.new(rows).print(*print_order)
 puts
 
 puts "By LastName descending"
 rows = parser.parse(:sort => [[:LastName, :desc]])
-puts RecordPrinter.new(rows).print(print_order)
+puts RecordPrinter.new(rows).print(*print_order)
 puts
