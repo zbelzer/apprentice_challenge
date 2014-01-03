@@ -1,9 +1,4 @@
-require 'rspec'
-require 'simplecov'
-
-SimpleCov.start
-
-require_relative '../lib/record_parser'
+require_relative 'spec_helper'
 
 describe RecordParser do
   describe "parse" do
