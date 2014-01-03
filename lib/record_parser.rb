@@ -46,10 +46,23 @@ class RecordParser
 
   # Sort the given row data based on the given options.
   #
-  # @param [Hash] options
+  # @param [Array] sorts
   # @return [Array<Hash>]
-  def sort_rows(rows, options)
-    rows
+  def sort_rows(rows, sorts)
+    return rows if sorts.nil? || sorts.empty?
+
+    sort = sorts.first
+
+    rows.sort do |a, b|
+      col, order = sort
+
+      result = a[col] <=> b[col]
+
+      if result == 0 # Tie
+      else
+        order == :asc ? result : -result
+      end
+    end
   end
 
   # Get the raw data of the file as a string.
