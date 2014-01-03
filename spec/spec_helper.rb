@@ -4,15 +4,15 @@ require 'simplecov'
 require 'rack/test'
 require 'pry'
 
+# Require all support files
+Dir[File.expand_path('../support/*', __FILE__)].each do |file|
+  require file
+end
+
 SimpleCov.start
 
 # Require all files in lib
 Dir[File.expand_path('../../lib/*', __FILE__)].each do |file|
-  require file
-end
-
-# Require all support files
-Dir[File.expand_path('../support/*', __FILE__)].each do |file|
   require file
 end
 
