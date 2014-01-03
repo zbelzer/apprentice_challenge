@@ -12,6 +12,9 @@ class RecordPrinter
   end
 
   # Print the rows with the columns in the given order
+  #
+  # Feature Opportunity:
+  # Take col and row separators as an argument
   def print(*columns)
     rows = [columns.join(COL_SEP)]
     rows += @rows.map do |row|

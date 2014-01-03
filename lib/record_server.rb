@@ -1,3 +1,6 @@
+require './lib/record_parser'
+require './lib/record_printer'
+
 require 'grape'
 require 'tempfile'
 
@@ -33,11 +36,15 @@ class RecordServer < Grape::API
   end
 
   resource :records do
-    desc "Post a single data line in any of the 3 formats supported by your existing code"
+    # Feature Opportunity:
+    # Take an uploaded file
+    desc "Uploads a single data line in any of the 3 supported formats"
     params do
       requires :data, type: String, desc: "A line of delimited data"
     end
     post do
+      # Refactoring Opportunity:
+      # Improve API of parser to take direct data. This is pretty hacky.
       tempfile = Tempfile.new("temp")
       tempfile.write params[:data]
       tempfile.rewind
@@ -46,6 +53,8 @@ class RecordServer < Grape::API
       RecordServer.add_records parser.parse
     end
 
+    # Refactoring Opportunity:
+    # There's probably a way to combine these two.
     desc "Returns all records"
     get do
       RecordServer.records

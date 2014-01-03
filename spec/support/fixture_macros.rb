@@ -9,6 +9,9 @@ module FixtureMacros
   end
 
   # Get a sample line from a fixture
+  #
+  # Refactoring Opportunity:
+  # Take an Integer or a Range for line. Also, if line is Nil, assume all rows.
   def sample_from_fixture(fixture_name, line)
     path = path_to_fixture(fixture_name)
     File.readlines(path)[line]

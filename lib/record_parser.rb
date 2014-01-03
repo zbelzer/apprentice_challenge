@@ -33,12 +33,18 @@ class RecordParser
 
   # Create a new parser initialized with a source file.
   #
+  # Refactoring Opportunity:
+  # Take data to be parsed and not just a path.
+  #
   # @param [String,Pathname] path Path to a file to read
   def initialize(path)
     @path = path.to_s
   end
 
   # Parse the current file in to a set of records.
+  #
+  # Refactoring Opportunity:
+  # Create a class method 'parse' that takes path and parsing options.
   #
   # @param [Hash] options
   # @return [Array<Hash>]
@@ -65,6 +71,9 @@ class RecordParser
 
   # Infer the separator based on the data (naive but hey).
   #
+  # Feature Opportunity:
+  # Detect by file extension
+  #
   # @raise RecordParser::UnknownFormat
   #
   # @return [String]
@@ -78,7 +87,8 @@ class RecordParser
 
   # Do the actual parsing of the data.
   # 
-  # If we have time, this can be pulled out into an object.
+  # Refactoring Opportunity:
+  # Pull this out into its own object like RecordSorter.
   #
   # @param [String] data
   # @return [Array<Hash>]

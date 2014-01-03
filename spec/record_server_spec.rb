@@ -11,6 +11,8 @@ describe RecordServer do
     RecordServer
   end
 
+  # Refactoring Opportunity:
+  # Leverage improved sample_from_fixture API
   def import_from_file(file, row)
     row = sample_from_fixture(file, row)
     post_json "/records", {:data => row}
