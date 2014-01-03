@@ -15,7 +15,17 @@ class RecordPrinter
   def print(*columns)
     rows = [columns.join(COL_SEP)]
     rows += @rows.map do |row|
-      columns.map { |col| row[col.to_sym] }.join(COL_SEP)
+      values = columns.map do |col|
+        value = row[col.to_sym] 
+
+        if value.respond_to?(:strftime)
+          value.strftime("%m/%d/%Y")
+        else
+          value
+        end
+      end
+
+      values.join(COL_SEP)
     end
     
     rows.join(ROW_SEP)
