@@ -50,6 +50,12 @@ describe RecordParser do
         parser = RecordParser.new(file)
         expect(parser.parse).to eql(correct_result)
       end
+
+      it "parses a SSV file" do
+        file = path_to_fixture('test.ssv')
+        parser = RecordParser.new(file)
+        expect(parser.parse).to eql(correct_result)
+      end
     end
 
     context "sorting" do
