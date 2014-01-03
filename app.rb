@@ -2,6 +2,7 @@
 
 require_relative 'lib/record_parser'
 require_relative 'lib/record_printer'
+require_relative 'lib/server'
 
 parser = RecordParser.new(ARGV[0])
 print_order = %w(LastName FirstName Gender DateOfBirth FavoriteColor)

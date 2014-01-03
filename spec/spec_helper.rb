@@ -1,6 +1,8 @@
 require 'bundler/setup'
 require 'rspec'
 require 'simplecov'
+require 'rack/test'
+require 'pry'
 
 SimpleCov.start
 
