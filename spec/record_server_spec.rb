@@ -11,6 +11,11 @@ describe RecordServer do
     RecordServer
   end
 
+  def import_from_file(file, row)
+    row = sample_from_fixture(file, row)
+    post_json "/records", {:data => row}
+  end
+
   before do
     app.reset
   end
@@ -22,12 +27,19 @@ describe RecordServer do
 
       last_response.status.should == 201
     end
+
+    it "can create multiple rows" do
+      (0..4).each { |i| import_from_file('test.csv', i) }
+
+      get_json "/records"
+      last_response.status.should == 200
+      expect(json_response).to have(5).records
+    end
   end
 
   describe "GET /records" do
     it "gets all records" do
-      einstein = sample_from_fixture('test.csv', 0)
-      post_json "/records", {:data => einstein}
+      import_from_file('test.csv', 0)
 
       get_json "/records"
       last_response.status.should == 200
