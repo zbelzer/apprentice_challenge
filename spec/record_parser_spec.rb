@@ -5,13 +5,11 @@ describe RecordParser do
   let(:darwin)   { {:LastName => "Darwin",   :FirstName => "Charles", :Gender => "Male",   :FavoriteColor => "Blue",   :DateOfBirth => Date.parse("1809-02-12")} }
   let(:curie)    { {:LastName => "Curie",    :FirstName => "Marie",   :Gender => "Female", :FavoriteColor => "Yellow", :DateOfBirth => Date.parse("1867-11-07")} }
   let(:lovelace) { {:LastName => "Lovelace", :FirstName => "Ada",     :Gender => "Female", :FavoriteColor => "Purple", :DateOfBirth => Date.parse("1815-12-10")} }
-  let(:turing)   { {:LastName => "Turing",   :FirstName => "Alan",    :Gender => "Male",   :FavoriteColor => "Green",    :DateOfBirth => Date.parse("1912-06-03")} }
+  let(:turing)   { {:LastName => "Turing",   :FirstName => "Alan",    :Gender => "Male",   :FavoriteColor => "Green",  :DateOfBirth => Date.parse("1912-06-03")} }
 
   describe "parse" do
     context "extraction" do
-      let(:correct_result) do
-        [ einstein, darwin, curie, lovelace, turing ]
-      end
+      let(:correct_result) { [ einstein, darwin, curie, lovelace, turing ] }
 
       it "raises FileNotFound exception when given file does not exist" do
         expect {
@@ -61,21 +59,10 @@ describe RecordParser do
     context "sorting" do
       let(:parser) { RecordParser.new(path_to_fixture('test.csv')) }
 
-      let(:gender_then_last_name) do
-        [ curie, lovelace, darwin, einstein, turing ]
-      end
-
-      let(:gender_then_color) do
-        [ curie, lovelace, einstein, darwin, turing ]
-      end
-
-      let(:birthdate_asc) do
-        [ darwin, lovelace, curie, einstein, turing ]
-      end
-
-      let(:last_name_desc) do
-        [ turing, lovelace, einstein, darwin, curie ]
-      end
+      let(:gender_then_last_name) { [ curie, lovelace, darwin, einstein, turing ] }
+      let(:gender_then_color) { [ curie, lovelace, einstein, darwin, turing ] }
+      let(:birthdate_asc) { [ darwin, lovelace, curie, einstein, turing ] }
+      let(:last_name_desc) { [ turing, lovelace, einstein, darwin, curie ] }
 
       it "sorts by two criteria" do
         result = parser.parse(:sort => [[:Gender, :asc], [:LastName, :asc]])
