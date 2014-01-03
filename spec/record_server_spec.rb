@@ -46,5 +46,32 @@ describe RecordServer do
       expect(json_response).to have(1).record
       expect(json_response[0]).to eq(einstein_record)
     end
+
+    it "gets records sorted by gender" do
+      (0..4).each { |i| import_from_file('test.csv', i) }
+
+      get_json "/records/gender"
+      last_response.status.should == 200
+      expect(json_response).to have(5).records
+      expect(last_response.body).to eq([ curie, lovelace, einstein, darwin, turing ].to_json)
+    end
+
+    it "gets records sorted by birthdate" do
+      (0..4).each { |i| import_from_file('test.csv', i) }
+
+      get_json "/records/birthdate"
+      last_response.status.should == 200
+      expect(json_response).to have(5).records
+      expect(last_response.body).to eq([ darwin, lovelace, curie, einstein, turing ].to_json)
+    end
+
+    it "gets records sorted by name" do
+      (0..4).each { |i| import_from_file('test.csv', i) }
+
+      get_json "/records/name"
+      last_response.status.should == 200
+      expect(json_response).to have(5).records
+      expect(last_response.body).to eq([curie, darwin, einstein, lovelace, turing].to_json)
+    end
   end
 end

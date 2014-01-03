@@ -4,6 +4,17 @@ require 'tempfile'
 class RecordServer < Grape::API
   format :json
 
+  # The requirements for records/:sort don't match to exact columns, so the
+  # assumed sorting is this:
+  SORT_MAPPING = {
+    "gender"        => [[:Gender, :asc]],
+    "birthdate"     => [[:DateOfBirth, :asc]],
+    "name"          => [[:LastName, :asc], [:FirstName, :asc]],
+    "lastname"      => [[:LastName, :asc]],
+    "firstname"     => [[:FirstName, :asc]],
+    "favoritecolor" => [[:FavoriteColor, :asc]]
+  }
+
   # Get internal data store of records.
   def self.records
     @records
@@ -34,9 +45,16 @@ class RecordServer < Grape::API
       RecordServer.add_records parser.parse
     end
 
-    desc "Returns records sorted by {sort}"
+    desc "Returns all records"
     get do
       RecordServer.records
+    end
+
+    desc "Returns records sorted by :sort"
+    get ":sort" do
+      sorter = RecordSorter.new(RecordServer.records)
+      sort_order = SORT_MAPPING[params[:sort]]
+      sorter.sort(sort_order)
     end
   end
 end
