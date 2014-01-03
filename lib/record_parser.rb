@@ -36,11 +36,20 @@ class RecordParser
   # Parse the current file in to a set of records.
   #
   # @param [Hash] options
+  # @return [Array<Hash>]
   def parse(options={})
-    csv_options = options.merge(DEFAULT_OPTIONS)
-    csv_options.update(:col_sep => inferred_separator)
+    sort_options = options[:sort]
 
-    CSV.parse(data, csv_options).map(&:to_hash)
+    rows = parse_rows(data)
+    sort_rows(rows, sort_options)
+  end
+
+  # Sort the given row data based on the given options.
+  #
+  # @param [Hash] options
+  # @return [Array<Hash>]
+  def sort_rows(rows, options)
+    rows
   end
 
   # Get the raw data of the file as a string.
@@ -71,4 +80,16 @@ class RecordParser
 
     raise UnknownFormat.new(@path)
   end
+
+  # Do the actual parsing of the data.
+  # 
+  # If we have time, this can be pulled out into an object.
+  #
+  # @param [String] data
+  # @return [Array<Hash>]
+  def parse_rows(data)
+    csv_options = DEFAULT_OPTIONS.merge(:col_sep => inferred_separator)
+    CSV.parse(data, csv_options).map(&:to_hash)
+  end
+  private :parse_rows
 end
