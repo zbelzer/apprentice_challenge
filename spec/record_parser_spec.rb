@@ -4,11 +4,11 @@ describe RecordParser do
   describe "parse" do
     let(:correct_result) do
       [
-        {:last_name => "Einstein", :first_name => "Albert",  :gender => "Male",   :favorite_color => "Green",  :date_of_birth => "03/14/1879"},
-        {:last_name => "Darwin",   :first_name => "Charles", :gender => "Male",   :favorite_color => "Blue",   :date_of_birth => "02/12/1809"},
-        {:last_name => "Curie",    :first_name => "Marie",   :gender => "Female", :favorite_color => "Yellow", :date_of_birth => "11/07/1867"},
-        {:last_name => "Lovelace", :first_name => "Ada",     :gender => "Female", :favorite_color => "Purple", :date_of_birth => "12/10/1815"},
-        {:last_name => "Turing",   :first_name => "Alan",    :gender => "Male",   :favorite_color => "Red",    :date_of_birth => "06/03/1912"}
+        {:LastName => "Einstein", :FirstName => "Albert",  :Gender => "Male",   :FavoriteColor => "Green",  :DateOfBirth => "03/14/1879"},
+        {:LastName => "Darwin",   :FirstName => "Charles", :Gender => "Male",   :FavoriteColor => "Blue",   :DateOfBirth => "02/12/1809"},
+        {:LastName => "Curie",    :FirstName => "Marie",   :Gender => "Female", :FavoriteColor => "Yellow", :DateOfBirth => "11/07/1867"},
+        {:LastName => "Lovelace", :FirstName => "Ada",     :Gender => "Female", :FavoriteColor => "Purple", :DateOfBirth => "12/10/1815"},
+        {:LastName => "Turing",   :FirstName => "Alan",    :Gender => "Male",   :FavoriteColor => "Red",    :DateOfBirth => "06/03/1912"}
       ]
     end
 

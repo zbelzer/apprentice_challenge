@@ -1,5 +1,12 @@
+require 'csv'
+
 # Entry point for RecordParsing
 class RecordParser
+  DEFAULT_OPTIONS = {
+    :headers => true,
+    :header_converters => lambda {|h| h.strip.to_sym},
+    :converters => lambda {|h| h.strip}
+  }
 
   # To be raised when the given file cannot be found.
   class FileNotFound < RuntimeError
@@ -19,7 +26,7 @@ class RecordParser
   #
   # @param [Hash] options
   def parse(options={})
-    data
+    CSV.parse(data, options.merge(DEFAULT_OPTIONS)).map(&:to_hash)
   end
 
   # Get the raw data of the file as a string.
