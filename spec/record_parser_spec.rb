@@ -1,16 +1,16 @@
 require_relative 'spec_helper'
 
 describe RecordParser do
+  let(:einstein) { {:LastName => "Einstein", :FirstName => "Albert",  :Gender => "Male",   :FavoriteColor => "Green",  :DateOfBirth => Date.parse("1879-03-14")} }
+  let(:darwin)   { {:LastName => "Darwin",   :FirstName => "Charles", :Gender => "Male",   :FavoriteColor => "Blue",   :DateOfBirth => Date.parse("1809-02-12")} }
+  let(:curie)    { {:LastName => "Curie",    :FirstName => "Marie",   :Gender => "Female", :FavoriteColor => "Yellow", :DateOfBirth => Date.parse("1867-11-07")} }
+  let(:lovelace) { {:LastName => "Lovelace", :FirstName => "Ada",     :Gender => "Female", :FavoriteColor => "Purple", :DateOfBirth => Date.parse("1815-12-10")} }
+  let(:turing)   { {:LastName => "Turing",   :FirstName => "Alan",    :Gender => "Male",   :FavoriteColor => "Green",    :DateOfBirth => Date.parse("1912-06-03")} }
+
   describe "parse" do
     context "extraction" do
       let(:correct_result) do
-        [
-          {:LastName => "Einstein", :FirstName => "Albert",  :Gender => "Male",   :FavoriteColor => "Green",  :DateOfBirth => Date.parse("1879-03-14")},
-          {:LastName => "Darwin",   :FirstName => "Charles", :Gender => "Male",   :FavoriteColor => "Blue",   :DateOfBirth => Date.parse("1809-02-12")},
-          {:LastName => "Curie",    :FirstName => "Marie",   :Gender => "Female", :FavoriteColor => "Yellow", :DateOfBirth => Date.parse("1867-11-07")},
-          {:LastName => "Lovelace", :FirstName => "Ada",     :Gender => "Female", :FavoriteColor => "Purple", :DateOfBirth => Date.parse("1815-12-10")},
-          {:LastName => "Turing",   :FirstName => "Alan",    :Gender => "Male",   :FavoriteColor => "Red",    :DateOfBirth => Date.parse("1912-06-03")}
-        ]
+        [ einstein, darwin, curie, lovelace, turing ]
       end
 
       it "raises FileNotFound exception when given file does not exist" do
@@ -56,33 +56,19 @@ describe RecordParser do
       let(:parser) { RecordParser.new(path_to_fixture('test.csv')) }
 
       let(:gender_then_last_name) do
-        [
-          {:LastName => "Curie",    :FirstName => "Marie",   :Gender => "Female", :FavoriteColor => "Yellow", :DateOfBirth => Date.parse("1867-11-07")},
-          {:LastName => "Lovelace", :FirstName => "Ada",     :Gender => "Female", :FavoriteColor => "Purple", :DateOfBirth => Date.parse("1815-12-10")},
-          {:LastName => "Darwin",   :FirstName => "Charles", :Gender => "Male",   :FavoriteColor => "Blue",   :DateOfBirth => Date.parse("1809-02-12")},
-          {:LastName => "Einstein", :FirstName => "Albert",  :Gender => "Male",   :FavoriteColor => "Green",  :DateOfBirth => Date.parse("1879-03-14")},
-          {:LastName => "Turing",   :FirstName => "Alan",    :Gender => "Male",   :FavoriteColor => "Red",    :DateOfBirth => Date.parse("1912-06-03")}
-        ]
+        [ curie, lovelace, darwin, einstein, turing ]
+      end
+
+      let(:gender_then_color) do
+        [ curie, lovelace, einstein, darwin, turing ]
       end
 
       let(:birthdate_asc) do
-        [
-          {:LastName => "Darwin",   :FirstName => "Charles", :Gender => "Male",   :FavoriteColor => "Blue",   :DateOfBirth => Date.parse("1809-02-12")},
-          {:LastName => "Lovelace", :FirstName => "Ada",     :Gender => "Female", :FavoriteColor => "Purple", :DateOfBirth => Date.parse("1815-12-10")},
-          {:LastName => "Curie",    :FirstName => "Marie",   :Gender => "Female", :FavoriteColor => "Yellow", :DateOfBirth => Date.parse("1867-11-07")},
-          {:LastName => "Einstein", :FirstName => "Albert",  :Gender => "Male",   :FavoriteColor => "Green",  :DateOfBirth => Date.parse("1879-03-14")},
-          {:LastName => "Turing",   :FirstName => "Alan",    :Gender => "Male",   :FavoriteColor => "Red",    :DateOfBirth => Date.parse("1912-06-03")}
-        ]
+        [ darwin, lovelace, curie, einstein, turing ]
       end
 
       let(:last_name_desc) do
-        [
-          {:LastName => "Turing",   :FirstName => "Alan",    :Gender => "Male",   :FavoriteColor => "Red",    :DateOfBirth => Date.parse("1912-06-03")},
-          {:LastName => "Lovelace", :FirstName => "Ada",     :Gender => "Female", :FavoriteColor => "Purple", :DateOfBirth => Date.parse("1815-12-10")},
-          {:LastName => "Einstein", :FirstName => "Albert",  :Gender => "Male",   :FavoriteColor => "Green",  :DateOfBirth => Date.parse("1879-03-14")},
-          {:LastName => "Darwin",   :FirstName => "Charles", :Gender => "Male",   :FavoriteColor => "Blue",   :DateOfBirth => Date.parse("1809-02-12")},
-          {:LastName => "Curie",    :FirstName => "Marie",   :Gender => "Female", :FavoriteColor => "Yellow", :DateOfBirth => Date.parse("1867-11-07")}
-        ]
+        [ turing, lovelace, einstein, darwin, curie ]
       end
 
       it "sorts by two criteria" do
@@ -98,6 +84,11 @@ describe RecordParser do
       it "sorts by string descending" do
         result = parser.parse(:sort => [[:LastName, :desc]])
         expect(result).to eql(last_name_desc)
+      end
+
+      it "handles too many ties" do
+        result = parser.parse(:sort => [[:Gender, :asc]])
+        expect(result).to eql(gender_then_color)
       end
     end
   end
