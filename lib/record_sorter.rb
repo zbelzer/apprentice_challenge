@@ -11,7 +11,7 @@ class RecordSorter
   def sort(sorts)
     return @rows if sorts.nil? || sorts.empty?
 
-    sorter = new_sort(sorts)
+    sorter = column_sort(sorts)
     @rows.sort(&sorter)
   end
 
@@ -19,22 +19,23 @@ class RecordSorter
   #
   # @param [Array<Array(col,order)>] sorts
   # @return [Proc]
-  def new_sort(sorts)
-    col, order = sorts.first
+  def column_sort(sorts)
+    current_sort    = sorts[0]
+    remaining_sorts = sorts[1..-1]
+
+    col, order = *current_sort
 
     lambda { |a, b|
       result = a[col] <=> b[col]
 
       if result == 0 # Tie
-        if sorts.empty?
-          result
-        else
-          new_sort(sorts[1..-1]).call(a, b)
-        end
+        return result if sorts.empty? # Base case
+
+        column_sort(remaining_sorts).call(a, b)
       else
         order == :asc ? result : -result
       end
     }
   end
-  private :new_sort
+  private :column_sort
 end

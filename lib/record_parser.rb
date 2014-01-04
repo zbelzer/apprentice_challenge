@@ -107,4 +107,5 @@ class RecordParser
   def sort_rows(rows, sorts)
     RecordSorter.new(rows).sort(sorts)
   end
+  private :sort_rows
 end

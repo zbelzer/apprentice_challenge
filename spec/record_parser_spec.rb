@@ -9,8 +9,7 @@ describe RecordParser do
         expect {
 
           not_a_file = path_to_fixture('foo.csv')
-          parser = RecordParser.new(not_a_file).parse
-          parser.parse
+          RecordParser.new(not_a_file).parse
 
         }.to raise_error(RecordParser::FileNotFound)
       end
@@ -19,8 +18,7 @@ describe RecordParser do
         expect {
 
           file = path_to_fixture('test.bsv')
-          parser = RecordParser.new(file)
-          parser.parse
+          RecordParser.new(file).parse
 
         }.to raise_error(RecordParser::UnknownFormat)
       end
